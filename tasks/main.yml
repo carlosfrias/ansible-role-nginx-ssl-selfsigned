@@ -1,11 +1,19 @@
 ---
 # tasks file for roles/nginx-ssl-selfsigned
 
-- name: system packages | install openssl
+- name: system packages | install openssl | redhat
   become: yes
   yum:
     name: openssl
     state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: system packages | install openssl | ubuntu
+  become: yes
+  apt:
+    name: openssl
+    state: present
+  when: ansible_os_family == 'Ubuntu' or ansible_os_family == 'Debian'
 
 - name: nginx | create certificates directory
   become: yes
